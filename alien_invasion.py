@@ -1,4 +1,5 @@
 import pygame
+import pygame.mixer
 from pygame.sprite import Group
 from settings import Settings
 from ship import Ship
@@ -8,11 +9,16 @@ from game_stats import GameStats
 from scorecard import Scoreboard
 
 def run_game():
+
     # Initialize game and create a screen object.
     pygame.init()
     ai_settings = Settings()
     screen = pygame.display.set_mode((ai_settings.screen_width, ai_settings.screen_height))
     pygame.display.set_caption("Alien Invasion")
+
+    #shooting_sound = pygame.mixer.Sound("music/Gun+1.wav")
+    pygame.mixer.music.load("music/Action_Time.mp3")
+    pygame.mixer.music.play(-1)
 
     # Make the play button
     play_button = Button(ai_settings, screen, "Play")
