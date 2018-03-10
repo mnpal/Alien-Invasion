@@ -92,7 +92,7 @@ def check_play_button(ai_settings, screen, stats, sb, play_button, ship, aliens,
     if button_clicked and not stats.game_active:
         # Reset the game settings.
         ai_settings.initialize_dynamic_settings()
-        start_game(ai_settings, screen, sb, stats, play_button, ship, aliens, bullets)
+        start_game(ai_settings, screen, stats, sb, play_button, ship, aliens, bullets)
 
 def get_number_aliens_x(ai_settings, alien_width):
     """Determine the number of aliens that fit in a row."""
@@ -110,7 +110,7 @@ def create_alien(ai_settings, screen, aliens, alien_number, row_number):
     # Create an alien and place it in the row.
     alien = Alien(ai_settings, screen)
     alien_width = alien.rect.width
-    alien.x = alien_width + 2*alien_width*alien_number
+    alien.x = alien_width + 2*alien_width*alien_number + 50
     alien.rect.x = alien.x
     alien.rect.y = 2*alien.rect.height + 2*alien.rect.height*row_number
     aliens.add(alien)
@@ -244,7 +244,7 @@ def check_high_score(stats, sb):
 
 def update_screen(ai_settings, screen, stats, sb, ship, aliens, bullets, play_button):
     # Redraw the screen during each pass through the loop.
-    screen.fill(ai_settings.bg_color)
+    #screen.fill(ai_settings.bg_color)
 
     # Redraw all bullets behind ship and aliens.
     for bullet in bullets.sprites():
@@ -262,3 +262,4 @@ def update_screen(ai_settings, screen, stats, sb, ship, aliens, bullets, play_bu
 
     # Make the most recently drawn screen visible.
     pygame.display.flip()
+    pygame.display.update()
