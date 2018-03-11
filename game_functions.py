@@ -1,11 +1,20 @@
 import sys
 import pygame
+import pygame.mixer
+
 from bullet import Bullet
 from alien import Alien
 from time import sleep
 
 def start_game(ai_settings, screen, stats, sb, play_button, ship, aliens, bullets):
-        # Hide the mouse cursor.
+        #Hide the mouse cursor.
+        pygame.mixer.music.stop()
+        #shooting_sound = pygame.mixer.Sound("music/Ghost_Chase_Thriller.mp3")
+        #pygame.mixer.Sound.play("music/Ghost_Chase_Thriller.mp3")
+
+        #pygame.mixer.music.load('music/Action_Time.mp3')
+        #pygame.mixer.music.play(-1)
+
         pygame.mouse.set_visible(False)
         # Reset the game statistics.
         stats.reset_stats()
@@ -29,7 +38,12 @@ def check_keydown_events(event, ai_settings, screen, stats, ship, bullets):
     elif event.key == pygame.K_LEFT:
         ship.moving_left = True
     elif event.key == pygame.K_SPACE:
+        pygame.mixer.music.load('music/Crash_Metal_Sweetener_Distant.mp3')
+        pygame.mixer.music.play(0)
+
         fire_bullets(ai_settings, screen, ship, bullets)
+        #pygame.mixer.Sound.play("music/Ghost_Chase_Thriller.mp3")
+        
     elif event.key == pygame.K_q:
         update_high_score(stats)
         sys.exit()
@@ -78,7 +92,7 @@ def check_play_button(ai_settings, screen, stats, sb, play_button, ship, aliens,
     if button_clicked and not stats.game_active:
         # Reset the game settings.
         ai_settings.initialize_dynamic_settings()
-        start_game(ai_settings, screen, sb, stats, play_button, ship, aliens, bullets)
+        start_game(ai_settings, screen, stats, sb, play_button, ship, aliens, bullets)
 
 def get_number_aliens_x(ai_settings, alien_width):
     """Determine the number of aliens that fit in a row."""
@@ -96,7 +110,7 @@ def create_alien(ai_settings, screen, aliens, alien_number, row_number):
     # Create an alien and place it in the row.
     alien = Alien(ai_settings, screen)
     alien_width = alien.rect.width
-    alien.x = alien_width + 2*alien_width*alien_number
+    alien.x = alien_width + 2*alien_width*alien_number + 50
     alien.rect.x = alien.x
     alien.rect.y = 2*alien.rect.height + 2*alien.rect.height*row_number
     aliens.add(alien)
@@ -155,6 +169,10 @@ def check_aliens_bottom(ai_settings, stats, screen, ship, aliens, bullets):
     for alien in aliens.sprites():
         if alien.rect.bottom >= screen_rect.bottom:
             # Treat this same as if the ship got hit.
+            pygame.mixer.music.stop()
+            pygame.mixer.music.load('music/Crash.mp3')
+            pygame.mixer.music.play(0)
+
             ship_hit(ai_settings, stats, sb, screen, ship, aliens, bullets)
             break
 
@@ -168,6 +186,9 @@ def update_aliens(ai_settings, stats, screen, sb, ship, aliens, bullets):
 
     # Look for alien-ship collisions.
     if pygame.sprite.spritecollideany(ship, aliens):
+        pygame.mixer.music.stop()
+        pygame.mixer.music.load('music/Crash.mp3')
+        pygame.mixer.music.play(0)
         ship_hit(ai_settings, stats, sb, screen, ship, aliens, bullets)
 
     # Look for aliens hitting the bottom of the screen.
@@ -178,6 +199,9 @@ def update_level(ai_settings, screen, stats, sb, ship, aliens, bullets):
         # Destroy existing bullets, apeed up game, and create new fleet.
         bullets.empty()
         ai_settings.increase_speed()
+
+        pygame.mixer.music.load('music/Beep_Short.mp3')
+        pygame.mixer.music.play(0)
 
         # Increase level
         stats.level += 1
@@ -196,6 +220,7 @@ def check_bullet_alien_collisions(ai_settings, screen, stats, sb, ship, aliens, 
     # Remove any bullets and aliens that have collided.
     collisions = pygame.sprite.groupcollide(bullets, aliens, True, True)
     if collisions:
+        
         update_score(ai_settings, stats, sb, aliens, collisions)
     update_level(ai_settings, screen, stats, sb, ship, aliens, bullets)
 
@@ -219,7 +244,7 @@ def check_high_score(stats, sb):
 
 def update_screen(ai_settings, screen, stats, sb, ship, aliens, bullets, play_button):
     # Redraw the screen during each pass through the loop.
-    screen.fill(ai_settings.bg_color)
+    #screen.fill(ai_settings.bg_color)
 
     # Redraw all bullets behind ship and aliens.
     for bullet in bullets.sprites():
@@ -237,3 +262,4 @@ def update_screen(ai_settings, screen, stats, sb, ship, aliens, bullets, play_bu
 
     # Make the most recently drawn screen visible.
     pygame.display.flip()
+    pygame.display.update()

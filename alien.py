@@ -1,5 +1,6 @@
 import pygame
 from pygame.sprite import Sprite
+import random
 
 class Alien(Sprite):
     """A class to represent a single alien in the fleet."""
@@ -10,7 +11,9 @@ class Alien(Sprite):
         self.ai_settings = ai_settings
 
         # Load the alien image and set its rect attribute.
-        self.image = pygame.image.load('images/jet-pack (2).png')
+        pokemons = ['images/pikachu.png', 'images/bullbasaur.png', 'images/charmander.png', 'images/eevee.png', 'images/jigglypuff.png']
+        n = random.randint(1, 5)
+        self.image = pygame.image.load(pokemons[n-1])
         self.rect = self.image.get_rect()
 
         # Start each new alien near the top left of the screen.
