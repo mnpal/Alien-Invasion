@@ -1,6 +1,6 @@
 # Alien-Invasion
 
-![alt text](https://raw.githubusercontent.com/manp3104/Alien-Invasion/master/images/to/CAPTURE.PNG)
+![alt text](https://github.com/manp3104/Alien-Invasion/blob/master/images/Capture.PNG)
 
 
 ## About
