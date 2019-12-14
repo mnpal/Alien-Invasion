@@ -5,3 +5,5 @@
 
 ## About
 Shooting based 2D game in Python 3 developed using pygame framework
+This game is amazing.
+Thanks a lot.
